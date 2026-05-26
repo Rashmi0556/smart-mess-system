@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Subscribers{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h4 class="mb-4">👥 Active Subscribers</h4>
+
+  {% if not subs %}
+    <div class="alert alert-info">No active subscribers yet.</div>
+  {% else %}
+    <div class="card border-0 shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th>Name</th>
+              <th>Room No</th>
+              <th>Email</th>
+              <th>Plan</th>
+              <th>Meal Type</th>
+              <th>Valid Until</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for sub, student, plan in subs %}
+            <tr>
+              <td>{{ student.name }}</td>
+              <td>{{ student.room_no }}</td>
+              <td>{{ student.email }}</td>
+              <td>{{ plan.plan_name }}</td>
+              <td>
+                <span class="badge {% if plan.meal_type == 'veg' %}bg-success{% else %}bg-danger{% endif %}">
+                  {{ plan.meal_type }}
+                </span>
+              </td>
+              <td>{{ sub.end_date }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}
