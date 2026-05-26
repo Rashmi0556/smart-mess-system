@@ -1,8 +1,89 @@
 {% extends 'base.html' %}
-{% block title %}Student Dashboard{% endblock %}
+{% block title %}Dashboard — Smart Mess{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
-  <h3>Welcome, {{ session.user_name }} 👋</h3>
-  <p class="text-muted">Student dashboard — coming in Phase 7</p>
+
+  <h4 class="mb-4">👋 Welcome, {{ student.name }}</h4>
+
+  <!-- Stats row -->
+  <div class="row g-3 mb-4">
+
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm text-center p-3">
+        <div class="fs-1">🍽️</div>
+        <div class="fs-3 fw-bold text-dark">{{ meals_eaten }}</div>
+        <div class="text-muted small">Meals eaten this month</div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm text-center p-3">
+        <div class="fs-1">📋</div>
+        <div class="fs-5 fw-bold text-dark">
+          {% if subscription %}
+            {{ subscription.status | capitalize }}
+          {% else %}
+            None
+          {% endif %}
+        </div>
+        <div class="text-muted small">Subscription status</div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card border-0 shadow-sm text-center p-3">
+        <div class="fs-1">📅</div>
+        <div class="fs-5 fw-bold text-dark">{{ today }}</div>
+        <div class="text-muted small">Today's date</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Subscription details -->
+  {% if subscription %}
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+      <h6 class="card-title text-muted">Active Subscription</h6>
+      <div class="row">
+        <div class="col-md-3"><strong>Mess:</strong> {{ subscription.mess_id }}</div>
+        <div class="col-md-3"><strong>Plan:</strong> {{ subscription.plan_id }}</div>
+        <div class="col-md-3"><strong>From:</strong> {{ subscription.start_date }}</div>
+        <div class="col-md-3"><strong>To:</strong> {{ subscription.end_date }}</div>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="alert alert-warning">
+    You don't have an active subscription.
+    <a href="{{ url_for('student.subscription') }}">Subscribe now →</a>
+  </div>
+  {% endif %}
+
+  <!-- Quick links -->
+  <div class="row g-3">
+    <div class="col-md-3">
+      <a href="{{ url_for('student.menu') }}" class="btn btn-outline-dark w-100 py-3">
+        🍱 Today's Menu
+      </a>
+    </div>
+    <div class="col-md-3">
+      <a href="{{ url_for('student.subscription') }}" class="btn btn-outline-dark w-100 py-3">
+        📋 Subscription
+      </a>
+    </div>
+    <div class="col-md-3">
+      <a href="{{ url_for('student.attendance') }}" class="btn btn-outline-dark w-100 py-3">
+        ✅ Attendance
+      </a>
+    </div>
+    <div class="col-md-3">
+      <a href="{{ url_for('payment.bill') }}" class="btn btn-outline-dark w-100 py-3">
+        💳 My Bill
+      </a>
+    </div>
+  </div>
+
 </div>
 {% endblock %}
