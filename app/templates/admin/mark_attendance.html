@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Mark Attendance{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h4 class="mb-2">✅ Mark Attendance</h4>
+  <p class="text-muted mb-4">Date: <strong>{{ today }}</strong></p>
+
+  {% if not subs %}
+    <div class="alert alert-info">No active subscribers to mark attendance for.</div>
+  {% else %}
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-4">
+        <form method="POST">
+
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead class="table-dark">
+                <tr>
+                  <th>Present</th>
+                  <th>Name</th>
+                  <th>Room No</th>
+                  <th>Meal Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for sub, student in subs %}
+                <tr>
+                  <td>
+                    <input type="checkbox"
+                           name="present"
+                           value="{{ student.student_id }}"
+                           class="form-check-input">
+                  </td>
+                  <td>{{ student.name }}</td>
+                  <td>{{ student.room_no }}</td>
+                  <td>{{ sub.plan_id }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt-4">
+            <button type="submit" class="btn btn-dark px-5">
+              Submit Attendance
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}
