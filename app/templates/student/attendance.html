@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Attendance{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h4 class="mb-4">✅ Attendance History</h4>
+
+  {% if not records %}
+    <div class="alert alert-info">No attendance records found yet.</div>
+  {% else %}
+    <div class="card border-0 shadow-sm">
+      <div class="table-responsive">
+        <table class="table table-hover mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th>Date</th>
+              <th>Meal Type</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for record in records %}
+            <tr>
+              <td>{{ record.date }}</td>
+              <td>
+                <span class="badge {% if record.meal_type == 'veg' %}bg-success{% else %}bg-danger{% endif %}">
+                  {{ record.meal_type }}
+                </span>
+              </td>
+              <td>
+                {% if record.present %}
+                  <span class="badge bg-success">✓ Present</span>
+                {% else %}
+                  <span class="badge bg-secondary">✗ Absent</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

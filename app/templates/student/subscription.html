@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Subscription{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h4 class="mb-4">📋 Manage Subscription</h4>
+
+  {% if active_sub %}
+  <div class="alert alert-success">
+    You already have an active subscription until <strong>{{ active_sub.end_date }}</strong>.
+    Subscribing again will replace it.
+  </div>
+  {% endif %}
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+      <form method="POST">
+
+        <div class="mb-3">
+          <label class="form-label fw-bold">Choose a Mess</label>
+          <select name="mess_id" class="form-select" required>
+            <option value="">-- Select Mess --</option>
+            {% for mess in messes %}
+              <option value="{{ mess.mess_id }}">
+                {{ mess.name }} — {{ mess.location }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold">Choose a Meal Plan</label>
+          <div class="row g-3">
+            {% for plan in plans %}
+            <div class="col-md-4">
+              <div class="card h-100">
+                <div class="card-body">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio"
+                           name="plan_id" value="{{ plan.plan_id }}" required>
+                    <label class="form-check-label fw-bold">{{ plan.plan_name }}</label>
+                  </div>
+                  <div class="mt-2 small text-muted">
+                    <div>₹{{ plan.price }} / {{ plan.duration_days }} days</div>
+                    <div>
+                      <span class="badge {% if plan.meal_type == 'veg' %}bg-success{% else %}bg-danger{% endif %}">
+                        {{ plan.meal_type }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <button type="submit" class="btn btn-dark px-5">
+            Activate Subscription
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
