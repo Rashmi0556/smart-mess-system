@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- block title lets each page set its own browser tab title -->
+  <title>{% block title %}Smart Mess System{% endblock %}</title>
+
+  <!-- Bootstrap CSS from CDN — gives us all the styling for free -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons — small icons we can use anywhere -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    body { background-color: #f8f9fa; }
+    .navbar-brand { font-weight: 700; letter-spacing: 0.5px; }
+    .sidebar { min-height: calc(100vh - 56px); background: #fff; border-right: 1px solid #dee2e6; }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR — shown on every page -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">🍱 Smart Mess</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+
+        <!-- session is available in all templates automatically -->
+        {% if session.user_id %}
+          <li class="nav-item">
+            <span class="nav-link text-light">
+              <!-- show different icon for student vs admin -->
+              {% if session.user_role == 'student' %}
+                <i class="bi bi-person-circle"></i>
+              {% else %}
+                <i class="bi bi-shield-check"></i>
+              {% endif %}
+              {{ session.user_name }}
+            </span>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.logout') }}">
+              <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+          </li>
+        {% endif %}
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- FLASH MESSAGES — appear at the top when you do flash('message') in Python -->
+<div class="container mt-3">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
+
+<!-- MAIN CONTENT — each page fills this block -->
+{% block content %}{% endblock %}
+
+<!-- Bootstrap JS — needed for navbar toggle, alerts etc. -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
